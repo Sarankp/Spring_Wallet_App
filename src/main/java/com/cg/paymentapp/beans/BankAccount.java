@@ -17,7 +17,7 @@ public class BankAccount {
 @Column
 	private double balance;
 @OneToOne
-@Column
+
 	private Wallet wallet;
 	public int getAccountNo() {
 		return accountNo;

@@ -3,7 +3,6 @@ package com.cg.paymentapp.beans;
 import java.time.LocalDate;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,15 +21,16 @@ import javax.persistence.Table;
 		@Id
 		@GeneratedValue(strategy=GenerationType.AUTO)
 		private int billId;
-		@OneToOne(cascade=CascadeType.ALL)
-		@JoinColumn(name="wallet_id")
-		private Wallet wallet;
-		@Column
+		
+		
 		private BillType billtype;
-		@Column
+		
 		private double amount;
-		@Column
+		
 		private LocalDate paymentDate;
+		@OneToOne(cascade=CascadeType.ALL)
+		@JoinColumn(name="walletid")
+		private Wallet wallet;
 		
 		/**
 		 * @param billId

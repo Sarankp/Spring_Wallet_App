@@ -1,6 +1,5 @@
 package com.cg.paymentapp.beans;
-import java.util.Date;
-
+import java.time.LocalDate;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,7 +20,7 @@ public class Transaction {
 	@Column
 	private String transactionType;
 	@Column
-	private Date transactionDate;
+	private LocalDate transactionDate;
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="wallet_id")
 	public Wallet wallet;
@@ -41,10 +40,10 @@ public class Transaction {
 	public void setTransactionType(String transactionType) {
 		this.transactionType = transactionType;
 	}
-	public Date getTransactionDate() {
+	public LocalDate getTransactionDate() {
 		return transactionDate;
 	}
-	public void setTransactionDate(Date transactionDate) {
+	public void setTransactionDate(LocalDate transactionDate) {
 		this.transactionDate = transactionDate;
 	}
 	public Wallet getWallet() {

@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cg.paymentapp.beans.BillPayment;
+import com.cg.paymentapp.beans.BillType;
 import com.cg.paymentapp.service.IBillPaymentService;
 
 @RestController
@@ -19,9 +21,9 @@ public class BillPaymentController {
 	private IBillPaymentService BillPaymentService;
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@PostMapping("/payment/add")
-	public ResponseEntity<BillPayment> insertBillPayment(
-			@RequestBody BillPayment payment){
+	@PostMapping("/payment/add/{billType}")
+	public ResponseEntity<BillPayment> addBillPayment(@RequestBody BillPayment payment,@PathVariable (value="billType")BillType billType){
+		payment.setBilltype(billType);
 		BillPayment pmt = BillPaymentService.addBillPayment(payment);
 		
 		if(pmt == null)
@@ -34,7 +36,7 @@ public class BillPaymentController {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@GetMapping("/payment/view")
+	@GetMapping("/payment/view/{billType}")
 	public ResponseEntity<BillPayment> viewBillPayment(
 			@RequestBody BillPayment payment){
 		BillPayment pmt = BillPaymentService.viewBillPayment(payment);

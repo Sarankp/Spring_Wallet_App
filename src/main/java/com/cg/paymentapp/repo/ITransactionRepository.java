@@ -1,5 +1,4 @@
 package com.cg.paymentapp.repo;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -12,6 +11,5 @@ public interface ITransactionRepository {
 	List<Transaction> viewAllTransactions(Wallet wallet)  throws InvalidInputException;
 	List<Transaction> viewTransactionsByDate(LocalDate localDate, LocalDate localDate1)  throws InvalidInputException;
 	List<Transaction> viewAllTransactions(String s)  throws InvalidInputException;
-	Transaction viewTransaction(int id)  throws InvalidInputException;
 	
 }

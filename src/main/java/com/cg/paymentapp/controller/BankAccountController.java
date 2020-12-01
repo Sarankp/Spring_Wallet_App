@@ -1,9 +1,5 @@
 package com.cg.paymentapp.controller;
-
 import java.util.List;
-
-import javax.security.auth.login.AccountNotFoundException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,70 +11,97 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+ 
+
 import com.cg.paymentapp.beans.BankAccount;
 import com.cg.paymentapp.beans.Wallet;
+import com.cg.paymentapp.exception.BankAccountNotFoundException;
 import com.cg.paymentapp.service.IAccountService;
+
+ 
 
 @RestController
 @RequestMapping("/account")
 public class BankAccountController {
-	@Autowired
-	private IAccountService accountService;
+    @Autowired
+    private IAccountService accountService;
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @PostMapping("/account/add")
+    public ResponseEntity<BankAccount> addAccount(@RequestBody BankAccount bacc) throws BankAccountNotFoundException {
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@PostMapping("/add")
-	public ResponseEntity<BankAccount> addAccount(@RequestBody BankAccount bacc) {
 
-		Wallet account = accountService.addAccount(bacc);
+        Wallet account = accountService.addAccount(bacc);
 
-		if(account == null) 
-			return new ResponseEntity("Sorry! couldn't insert!", HttpStatus.NOT_FOUND);
+ 
 
-		return new ResponseEntity<BankAccount>(bacc , HttpStatus.OK);
+        if(account == null) 
+            return new ResponseEntity("Sorry! couldn't insert!", HttpStatus.NOT_FOUND);
 
-	}
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@DeleteMapping("/delete/{bacc}")
-	public ResponseEntity<BankAccount> removeAccount(@PathVariable("bacc")BankAccount bacc) {
+ 
 
-		Wallet account = null;
-		try {
-			account = accountService.removeAccount(bacc);
-			if(account == null) 
-				throw new AccountNotFoundException();
-		} catch(AccountNotFoundException e) {
-			return new ResponseEntity("Couldn't delete!", HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<BankAccount>(bacc , HttpStatus.OK);
+        return new ResponseEntity<BankAccount>(bacc , HttpStatus.OK);
 
-	}
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@GetMapping("/view/{bacc}")
-	public ResponseEntity<BankAccount> viewAccount(@PathVariable("bacc")BankAccount bacc) {
+ 
 
-		Wallet account = null;
-		try {
-			account = accountService.viewAccount(bacc);
-			if(account == null) 
-				throw new AccountNotFoundException();
-		} catch(AccountNotFoundException e) {
-			return new ResponseEntity("Couldn't view!", HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<BankAccount>(bacc, HttpStatus.OK);
+    }
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @DeleteMapping("/account/delete")
+    public ResponseEntity<BankAccount> removeAccount(@PathVariable("bacc")BankAccount bacc) {
 
-	}
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@GetMapping("/viewall")
-	public ResponseEntity<List<Wallet>> viewAllAccounts() {
+ 
 
-		Wallet wal=new Wallet();
-		List<Wallet> bacc = accountService.viewAllAccounts(wal);
+        Wallet account = null;
+        try {
+            account = accountService.removeAccount(bacc);
+            if(account == null) 
+                throw new BankAccountNotFoundException(null);
+        } catch(BankAccountNotFoundException e) {
+            return new ResponseEntity("Couldn't delete!", HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<BankAccount>(bacc , HttpStatus.OK);
 
-		if(bacc.isEmpty()) {
-			return new ResponseEntity("Account list not avialable", HttpStatus.NOT_FOUND);
-		}
+ 
 
-		return new ResponseEntity<List<Wallet>>(bacc, HttpStatus.OK);
+    }
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @GetMapping("/account/view")
+    public ResponseEntity<BankAccount> viewAccount(@PathVariable("bacc")BankAccount bacc) {
 
-	}
+ 
+
+        Wallet account = null;
+        try {
+            account = accountService.viewAccount(bacc);
+            if(account == null) 
+                throw new BankAccountNotFoundException(null);
+        } catch(BankAccountNotFoundException e) {
+            return new ResponseEntity("Couldn't view!", HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<BankAccount>(bacc, HttpStatus.OK);
+
+ 
+
+    }
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @GetMapping("/account/viewAll")
+    public ResponseEntity<List<Wallet>> viewAllAccounts(@RequestBody Wallet wallet) throws BankAccountNotFoundException {
+
+ 
+
+        Wallet wal=new Wallet();
+        List<Wallet> bacc = accountService.viewAllAccounts(wallet);
+
+ 
+
+        if(bacc.isEmpty()) {
+            return new ResponseEntity("Account list not avialable", HttpStatus.NOT_FOUND);
+        }
+
+ 
+
+        return new ResponseEntity<List<Wallet>>(bacc, HttpStatus.OK);
+
+ 
+
+    }
 }

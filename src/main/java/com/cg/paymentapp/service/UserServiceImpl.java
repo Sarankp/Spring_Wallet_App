@@ -11,16 +11,16 @@ public class UserServiceImpl implements IUserService {
 	
 @Autowired
  IUserRepo userrepo;
-
+@Override
 public Customer validateLogin(String mobileNumber, String password) throws InvalidInputException {
 	// TODO Auto-generated method stub
     
-	  Customer customer=new Customer();
-	 Customer ouser = userrepo.findCustomerBymobileNoAndPassword(customer.getMobileNo(),customer.getPassword());
-   
 	 
-	 
+	 Customer ouser = userrepo.findByMobileNoAndPassword(mobileNumber,password);
 	 return ouser;
+	
+
+	//return userrepo.validateLogin(mobileNumber,password);
 	
 }
 }

@@ -1,35 +1,44 @@
 package com.cg.paymentapp.controller;
-
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-//import com.cg.paymentapp.beans.Beneficiary;
 import com.cg.paymentapp.beans.BeneficiaryDetails;
 import com.cg.paymentapp.beans.Customer;
 import com.cg.paymentapp.exception.InvalidInputException;
 import com.cg.paymentapp.service.IBeneficiaryService;
 
 @RestController
-@RequestMapping("/Beneficiary")
+@RequestMapping("/beneficiary")
 
-public class BenificiaryController {
-	
+public class BeneficiaryController {
 	@Autowired
 	private IBeneficiaryService beneficiaryService;
-	 
+	//@SuppressWarnings({ "unchecked", "rawtypes" })
+	@PostMapping("/beneficiary/add")
+	public ResponseEntity<BeneficiaryDetails> addBeneficiary(@RequestBody BeneficiaryDetails bd ){
+		BeneficiaryDetails beneficiary = null;
+		try {
+			beneficiary = beneficiaryService.addBeneficiary(bd);
+			if(beneficiary== null)
+			{
+				throw new InvalidInputException(null);
+			}
+		}catch(InvalidInputException iie) {
+			return new ResponseEntity("Sorry! couldn't add!", HttpStatus.NOT_FOUND);
+			
+		}
+		return new ResponseEntity<BeneficiaryDetails>(beneficiary,HttpStatus.OK);
+	}
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@PutMapping("/Beneficiary/update")
+	@PutMapping("/beneficiary/update")
 	public ResponseEntity<BeneficiaryDetails> updateBeneficiary(@RequestBody BeneficiaryDetails bd ){
 		BeneficiaryDetails beneficiary = null;
 		try {
@@ -45,24 +54,8 @@ public class BenificiaryController {
 		return new ResponseEntity<BeneficiaryDetails>(beneficiary,HttpStatus.OK);
 		
 	}
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@PostMapping("/Beneficiary/add")
-	public ResponseEntity<BeneficiaryDetails> addBeneficiary(@RequestBody BeneficiaryDetails bd ){
-		BeneficiaryDetails beneficiary = null;
-		try {
-			beneficiary = beneficiaryService.addBeneficiary(bd);
-			if(beneficiary== null)
-			{
-				throw new InvalidInputException(null);
-			}
-		}catch(InvalidInputException iie) {
-			return new ResponseEntity("Sorry! couldn't add!", HttpStatus.NOT_FOUND);
-			
-		}
-		return new ResponseEntity<BeneficiaryDetails>(beneficiary,HttpStatus.OK);
-	}
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@DeleteMapping("/Beneficiary/delete")
+	@DeleteMapping("/beneficiary/delete")
 	public ResponseEntity<BeneficiaryDetails> deleteBeneficiary(@RequestBody BeneficiaryDetails bd ){
 		BeneficiaryDetails beneficiary = null;
 		try {
@@ -94,7 +87,7 @@ public class BenificiaryController {
 		return new ResponseEntity<BeneficiaryDetails>(beneficiary,HttpStatus.OK);
 	}
 	@SuppressWarnings({ "unchecked", "rawtypes", "unused" })
-	@GetMapping("/Beneficiary/viewAll")
+	@GetMapping("/beneficiary/viewAll")
 	
 	public ResponseEntity<List<BeneficiaryDetails>> viewAllBeneficiary(@RequestBody Customer customer ){
 		Customer cust = new Customer();
@@ -109,3 +102,6 @@ public class BenificiaryController {
 		return new ResponseEntity<List<BeneficiaryDetails>>(beneficiary,HttpStatus.OK);
 	}
 }
+	
+	
+	
