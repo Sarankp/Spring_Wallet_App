@@ -2,11 +2,11 @@ package com.cg.paymentapp.controller;
 
 import java.math.BigDecimal;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,8 +28,8 @@ public class WalletController {
 		 
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@PostMapping("/create")
-		public ResponseEntity<Customer> create(@RequestParam String name,@RequestParam String mobileNo,@RequestParam BigDecimal amount ){  //
-			//@RequestBody Customer c;
+		public ResponseEntity<Customer> create(@RequestParam(name = "username") String name,@RequestParam(name="mobNo") String mobileNo,@RequestParam(name="amount") BigDecimal amount ){  //
+			
 			
 			Customer cu = null;
 			try {
@@ -85,13 +85,13 @@ public class WalletController {
          public ResponseEntity<Customer>findone(@RequestBody String m){//
 	       Customer cu = null;
 	       try {
-		   cu = walletservice.showBalance(m);
+		   cu = walletservice.findOne(m);
 		     if(cu == null)
 		    {
 			throw new InvalidInputException(null);
 		   }
 	          }catch(InvalidInputException msg) {
-		  new ResponseEntity("Sorry! couldn't save!", HttpStatus.NOT_FOUND);
+		  new ResponseEntity("Sorry! couldn't find!", HttpStatus.NOT_FOUND);
 		
 	      }
 	     return new ResponseEntity<Customer>(cu,HttpStatus.OK);
@@ -110,7 +110,7 @@ public class WalletController {
 			throw new InvalidInputException(null);
 		}
 	    }catch(InvalidInputException msg) {
-		return new ResponseEntity("Sorry! couldn't save!", HttpStatus.NOT_FOUND);
+		return new ResponseEntity("Sorry! couldn't found!", HttpStatus.NOT_FOUND);
 		
 	   }
 	    return new ResponseEntity<Customer>(cu,HttpStatus.OK);
