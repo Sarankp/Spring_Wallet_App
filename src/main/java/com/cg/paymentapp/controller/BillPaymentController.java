@@ -38,7 +38,7 @@ public class BillPaymentController {
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@GetMapping("/payment/view/{billType}")
 	public ResponseEntity<BillPayment> viewBillPayment(
-			@RequestBody BillPayment payment){
+			@RequestBody BillPayment payment,@PathVariable (value="billType")BillType billType){
 		BillPayment pmt = BillPaymentService.viewBillPayment(payment);
 		
 		if(pmt == null)
