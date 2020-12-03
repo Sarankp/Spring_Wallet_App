@@ -16,4 +16,6 @@ public Customer depositAmount (String mobileNo,BigDecimal amount );
 //public Wallet updateAccount(Wallet wobj);
 public Customer addMoney(Wallet wallet, double amount);
 public boolean save(Customer customer) throws InvalidInputException;
+ Customer findOne(String mobileNo) throws InvalidInputException;
+List<Customer> getList();
 }
